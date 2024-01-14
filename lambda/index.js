@@ -9,8 +9,7 @@ const LaunchRequestHandler = {
     );
   },
   async handle(handlerInput) {
-    const chatID =
-      handlerInput.requestEnvelope.context.System.user.userId.substring(27, 40);
+    const chatID = handlerInput.requestEnvelope.session.user.userId;
     let iaWelcoming = async () => {
       const apiUrl = `https://general-runtime.voiceflow.com/state/user/${chatID}/interact`;
       const authToken = process.env.AUTH_TOKEN;
@@ -63,8 +62,7 @@ const HelloWorldIntentHandler = {
   async handle(handlerInput) {
     const slotValue =
       handlerInput.requestEnvelope.request.intent.slots.pregunta.value;
-    const chatID =
-      handlerInput.requestEnvelope.context.System.user.userId.substring(27, 40);
+    const chatID = handlerInput.requestEnvelope.session.user.userId;
     let iaCall = async () => {
       const apiUrl = `https://general-runtime.voiceflow.com/state/user/${chatID}/interact`;
       const authToken = process.env.AUTH_TOKEN;
