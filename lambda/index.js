@@ -63,9 +63,9 @@ const HelloWorldIntentHandler = {
     const slotValue =
       handlerInput.requestEnvelope.request.intent.slots.pregunta.value;
     const chatID = handlerInput.requestEnvelope.session.user.userId;
+    const authToken = process.env.AUTH_TOKEN;
     let iaCall = async () => {
       const apiUrl = `https://general-runtime.voiceflow.com/state/user/${chatID}/interact`;
-      const authToken = process.env.AUTH_TOKEN;
       const rawData = `{
         "action": {
           "type": "text",
@@ -106,6 +106,16 @@ const HelloWorldIntentHandler = {
           return;
         }
       });
+      axios.delete(
+        `https://general-runtime.voiceflow.com/state/user/${chatID}`,
+        {
+          headers: {
+            Authorization: authToken,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
     }
     return handlerInput.responseBuilder.speak(msgResponse).getResponse();
   },
@@ -219,6 +229,7 @@ const ErrorHandler = {
     return true;
   },
   handle(handlerInput, error) {
+    console.error(error, handlerInput, "ASFJBKASFBHJKASFBKJHAFS");
     const speakOutput =
       "Sorry, I had trouble doing what you asked. Please try again.";
     console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
